@@ -8,11 +8,15 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  @override
-  void initState() {
-    super.initState();
-    // TODO: initiate controllers
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // TODO: initiate controllers
+  // }
+
+  TextEditingController zipController = TextEditingController();
+
+  Future<String> zipFuture = Future.value("Ergebnis: Noch keine PLZ gesucht");
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +25,11 @@ class _MainScreenState extends State<MainScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: zipController,
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(), labelText: "Postleitzahl"),
               ),
               const SizedBox(height: 32),
@@ -34,8 +40,25 @@ class _MainScreenState extends State<MainScreen> {
                 child: const Text("Suche"),
               ),
               const SizedBox(height: 32),
-              Text("Ergebnis: Noch keine PLZ gesucht",
-                  style: Theme.of(context).textTheme.labelLarge),
+              FutureBuilder(
+                future: zipFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return const Text('Error');
+                    } else if (snapshot.hasData) {
+                      final String zip = snapshot.data ?? "keine Ort gefunden";
+                      return Text(zip);
+                    }
+                    
+                  }
+                  return const Text("Unbekannter Fehler");
+                },
+              )
+              // Text("Ergebnis: Noch keine PLZ gesucht",
+              //     style: Theme.of(context).textTheme.labelLarge),
             ],
           ),
         ),
