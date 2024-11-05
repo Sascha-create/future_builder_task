@@ -11,7 +11,7 @@ class _MainScreenState extends State<MainScreen> {
   // @override
   // void initState() {
   //   super.initState();
-  //   // TODO: initiate controllers
+  //   // TODO: initiate controllers --> erledigt
   // }
 
   TextEditingController zipController = TextEditingController();
@@ -35,7 +35,10 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(height: 32),
               OutlinedButton(
                 onPressed: () {
-                  // TODO: implementiere Suche
+                  // TODO: implementiere Suche --> erledigt
+                  setState(() {
+                    zipFuture = getCityFromZip(zipController.text);
+                  });
                 },
                 child: const Text("Suche"),
               ),
@@ -47,12 +50,11 @@ class _MainScreenState extends State<MainScreen> {
                     return const CircularProgressIndicator();
                   } else if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasError) {
-                      return const Text('Error');
+                      return const Text("Error");
                     } else if (snapshot.hasData) {
                       final String zip = snapshot.data ?? "keine Ort gefunden";
-                      return Text(zip);
+                      return Text("Ergebnis: $zip");
                     }
-                    
                   }
                   return const Text("Unbekannter Fehler");
                 },
