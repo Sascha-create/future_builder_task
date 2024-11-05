@@ -53,7 +53,9 @@ class _MainScreenState extends State<MainScreen> {
                       return const Text("Error");
                     } else if (snapshot.hasData) {
                       final String zip = snapshot.data ?? "keine Ort gefunden";
-                      return Text("Ergebnis: $zip");
+
+                      return Text("Ergebnis: $zip",
+                          style: Theme.of(context).textTheme.labelLarge);
                     }
                   }
                   return const Text("Unbekannter Fehler");
@@ -70,7 +72,10 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void dispose() {
-    // TODO: dispose controllers
+    // TODO: dispose controllers  <-- nichts hilfreiches zu dispose gefunden
+
+    zipController.dispose();
+
     super.dispose();
   }
 
